@@ -1,6 +1,7 @@
 const express = require("express");
 const employeesRoutes = require("./routes/employeeRoutes");
 const winston = require("winston");
+const connection = require("./helpers/db");
 
 const app = express();
 const port = 3000;
@@ -37,6 +38,17 @@ app.use((req, res, next) => {
 // app.post("/employees", employees.addEmployee);
 // app.put("/employee/:id", employees.updateEmployee);
 // app.delete("/employee/:id", employees.deleteEmployee);
+
+app.get("/users", (req, res) => {
+  connection.query("SELECT * FROM users", (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err.stack);
+      res.status(500).send("Error fetching data");
+      return;
+    }
+    res.json(results);
+  });
+});
 
 app.use("/employees", employeesRoutes);
 
