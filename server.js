@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const tutorialRoutes = require("./app/routes/tutorial.routes");
 const sportsRoutes = require("./app/routes/sports.routes");
+const EmployeesRoutes = require("./app/routes/employees.routes");
+const TeamsRoutes = require("./app/routes/teams.routes");
 
 const app = express();
 
@@ -22,10 +24,20 @@ app.get("/", (req, res) => {
   console.log("GET / request received");
   res.json({ message: "Welcome to my application." });
 });
+
+/** Importing route files */
 app.use("/tutorials", tutorialRoutes);
 app.use("/sports", sportsRoutes);
+app.use("/employees", EmployeesRoutes);
+app.use("/teams", TeamsRoutes);
 
 const db = require("./app/models");
+// const Employees = db.employees;
+// const EmployeeSettings = db.employee_settings;
+// Employees.hasOne(EmployeeSettings, {
+//   foreignKey: "emp_id",
+// });
+
 db.sequelize
   .sync()
   .then(() => {
