@@ -44,50 +44,48 @@ const getAllSports = (req, res) => {
     });
 };
 
-const getSportById = (req, res) => {
-  Sports.findByPk(req.params.id)
-    .then((data) => {
-      if (data) {
-        res
-          .status(200)
-          .send({ data: data, message: "Sport retrieved successfully" });
-      } else {
-        res.status(404).send({
-          message: `Cannot find Sport with id=${id}.`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: `Error retrieving Sport with id=${req.params.id}.`,
+const getSportById = async (req, res) => {
+  try {
+    const data = await Sports.findByPk(req.params.id);
+    if (data) {
+      res
+        .status(200)
+        .send({ data: data, message: "Sport retrieved successfully" });
+    } else {
+      res.status(404).send({
+        message: `Cannot find Sport with id=${id}.`,
       });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: `Error retrieving Sport with id=${req.params.id}.`,
     });
+  }
 };
 
-const addSport = (req, res) => {
-  if (!req.body.name) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
-
-  const tutorial = {
-    name: req.body.name,
-    description: req.body.description,
-  };
-
-  Sports.create(tutorial)
-    .then((data) => {
-      res
-        .status(201)
-        .send({ data: data, message: "A new Sport created successfully" });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Sport.",
+const addSport = async (req, res) => {
+  try {
+    if (!req.body.name) {
+      res.status(400).send({
+        message: "Content can not be empty!",
       });
+      return;
+    }
+
+    const tutorial = {
+      name: req.body.name,
+      description: req.body.description,
+    };
+
+    const data = await Sports.create(tutorial);
+    res
+      .status(201)
+      .send({ data: data, message: "A new Sport created successfully" });
+  } catch (error) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while creating the Sport.",
     });
+  }
 };
 
 const updateSport = (req, res) => {
