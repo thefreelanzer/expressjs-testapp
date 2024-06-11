@@ -56,12 +56,6 @@ const EmployeesList = async (req, res) => {
 const createEmployee = async (req, res) => {
   try {
     const attributes = req.body;
-    if (!attributes.name) {
-      res.status(400).send({
-        message: "Content can not be empty!",
-      });
-      return;
-    }
 
     const employee = {
       name: attributes.name,
@@ -88,12 +82,10 @@ const createEmployee = async (req, res) => {
         await EmployeeTeams.create(team);
       }
     }
-    res
-      .status(201)
-      .send({
-        data: newEmployee,
-        message: "A new Employee created successfully",
-      });
+    res.status(201).send({
+      data: newEmployee,
+      message: "A new Employee created successfully",
+    });
   } catch (err) {
     res.status(500).send({
       message:
