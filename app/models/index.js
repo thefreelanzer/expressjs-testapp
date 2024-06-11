@@ -69,11 +69,26 @@ Teams.belongsToMany(Employees, {
   foreignKey: "team_id",
 });
 
+/** User */
+const User = require("./user.model.js")(sequelize, Sequelize);
+const Role = require("./role.model.js")(sequelize, Sequelize);
+
+Role.belongsToMany(User, {
+  through: "user_roles",
+});
+User.belongsToMany(Role, {
+  through: "user_roles",
+});
+
 db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.sports = require("./sports.model.js")(sequelize, Sequelize);
 db.teams = Teams;
 db.employee_teams = EmployeeTeams;
 db.employees = Employees;
 db.employee_settings = EmployeeSettings;
+db.role = Role;
+db.user = User;
+
+db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;

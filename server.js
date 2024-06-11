@@ -4,6 +4,8 @@ const tutorialRoutes = require("./app/routes/tutorial.routes");
 const sportsRoutes = require("./app/routes/sports.routes");
 const EmployeesRoutes = require("./app/routes/employees.routes");
 const TeamsRoutes = require("./app/routes/teams.routes");
+const AuthRoutes = require("./app/routes/auth.routes");
+const UserRoutes = require("./app/routes/user.routes");
 
 const app = express();
 
@@ -30,13 +32,33 @@ app.use("/tutorials", tutorialRoutes);
 app.use("/sports", sportsRoutes);
 app.use("/employees", EmployeesRoutes);
 app.use("/teams", TeamsRoutes);
+app.use("/users", UserRoutes);
+app.use("/api", AuthRoutes);
 
 const db = require("./app/models");
-// const Employees = db.employees;
-// const EmployeeSettings = db.employee_settings;
-// Employees.hasOne(EmployeeSettings, {
-//   foreignKey: "emp_id",
+// const Role = db.role;
+
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and Resync Db");
+//   initial();
 // });
+
+// function initial() {
+//   Role.create({
+//     id: 1,
+//     name: "user",
+//   });
+
+//   Role.create({
+//     id: 2,
+//     name: "moderator",
+//   });
+
+//   Role.create({
+//     id: 3,
+//     name: "admin",
+//   });
+// }
 
 db.sequelize
   .sync()
