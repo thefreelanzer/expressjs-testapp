@@ -59,18 +59,19 @@ const signin = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id }, config.secret, {
-      algorithm: "HS256",
-      allowInsecureKeySizes: true,
-      expiresIn: 86400, // 24 hours
+      algorithm: config.algorithm,
+      allowInsecureKeySizes: config.allowInsecureKeySizes,
+      expiresIn: config.expiresIn,
     });
 
     var authorities = [];
 
     const roles = await user.getRoles();
     if (roles) {
-      for (let i = 0; i < roles.length; i++) {
-        authorities.push("ROLE_" + roles[i].name.toUpperCase());
-      }
+      roles.forEach((role) => {
+        authorities.push("ROLE_" + role.name.toUpperCase());
+      });
+
       res.status(200).send({
         id: user.id,
         username: user.username,
